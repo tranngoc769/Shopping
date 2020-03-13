@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
 // VIEWS ENGINE
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine','ejs');
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 /* @@END VIEWS ENGINE */
 
 /* BODY_PARSER */
