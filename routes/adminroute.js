@@ -1,22 +1,27 @@
 var express = require('express');
 var router = express.Router();
-
 router.get('/',(req,res)=>
 {
-    res.render('admin/index');
+    // res.render('admin/index');
+    res.send('admin area');
 })
 
+// router.get('/add-page',(req,res)=>
+// {
+//     res.render('admin/add-page',
+//     {
+//         Title : 'Thêm Trang',
+//         title :'title',
+//         slug : 'slug',
+//         type : 'type',
+//         content : 'content'
 
-router.get('/add-page',(req,res)=>
+//     });
+// });
+router.post('/post-cat',(req,res)=>
 {
-    res.render('admin/add-page',
-    {
-        Title : 'Thêm Trang',
-        title :'',
-        slug : '',
-        type : '',
-        content : ''
+    console.log('post cat ok');
+    res.send('post success');
+})
 
-    });
-});
 module.exports  = router;

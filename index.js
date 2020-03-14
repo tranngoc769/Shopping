@@ -50,8 +50,10 @@ app.use(bodyParser.json())
 /* ROUTE */
 var router = require('./routes/route');
 app.use('/', router);
-var adminrouter = require('./routes/adminroute');
-app.use('/admin', adminrouter);
+var adminRouter = require('./routes/adminroute');
+app.use('/admin', adminRouter);
+var adminCateRouter = require('./routes/adminroute/category');
+app.use('/admin/category', adminCateRouter);
 /* @@END ROUTE */
 
 
