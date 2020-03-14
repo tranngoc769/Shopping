@@ -16,5 +16,10 @@ module.exports = {
         const rows = await connection.querry(sql);
         // console.log(sql);
     },
+    addCat : async (name,fname,des) =>{
+        var sql =  `INSERT INTO category (name,fullname,description) VALUES ('${name}','${fname}','${des}')`;
+        const rows = await connection.querry(sql);
+        // console.log(sql);
+    },
 
 }

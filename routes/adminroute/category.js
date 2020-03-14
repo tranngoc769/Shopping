@@ -22,8 +22,8 @@ router.post('/update',async(req,res)=>
 router.post('/delete',async(req,res)=>
 {
     var id = req.body.id;
-    // const object = await catModel.deleteCatbyID(id);
-    
+    const object = await catModel.deleteCatbyID(id);
+    console.log(id);
     res.send('success');
 })
 router.post('/deleteAll',async(req,res)=>
@@ -35,4 +35,11 @@ router.post('/deleteAll',async(req,res)=>
     });
     res.send('success');
 })
+router.post('/add',async(req,res)=>
+{
+    var {name,fullname,description} = req.body;
+    await catModel.addCat(name,fullname,description);
+    res.send('success');
+})
+
 module.exports = router;
