@@ -1,23 +1,41 @@
 const mysql = require('mysql');
 
-function connectToSring() {
-    return mysql.createConnection({
-        host: '45.252.248.16',
-        port: '3306',
-        user: 'vesinhv1',
-        password: 'tranngoc7699',
-        database: 'vesinhv1_shop'
+var conn = mysql.createConnection({
+    host: 'localhost',
+    port: '3306',
+    user: 'root',
+    password: '',
+    database: 'ecommerce'
+});
+function connect()
+{
+    conn.connect(function (err){
+        if (err) throw err.stack;
+        console.log('Connection success');
     });
 }
-exports.connect = sql => {
+function end()
+{
+    conn.end(function (err){
+        if (err) throw err.stack;
+        console.log('End connection success');
+    });
+}
+async function querry (sql){
     return new Promise((resolve, reject) => {
-        const con = connectToSring();
-        con.connect(err => {
-            if (err) {
-                reject(err);
+        conn.query(sql, (error, results, fields) => {
+            if (error) {
+                console.log(error)
+                reject(error);
             }
-            console.log("Connected!");
+            resolve(results);
         });
     });
 };
 
+module.exports = 
+{
+    end,
+    connect,
+    querry
+}

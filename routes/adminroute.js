@@ -18,10 +18,6 @@ router.get('/',(req,res)=>
 
 //     });
 // });
-router.post('/post-cat',(req,res)=>
-{
-    console.log('post cat ok');
-    res.send('post success');
-})
+
 
 module.exports  = router;

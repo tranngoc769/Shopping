@@ -3,14 +3,14 @@ var express = require('express');
 var path = require('path');
 var db = require('mysql');
 var app = express();
-const connect = require('./utils/db')
+const connect = require('./utils/db');
 var bodyParser = require("body-parser");
 var session = require('express-session');
 var validator = require('express-validator');
 /* @@END DECLASRE */
 
 /* CONNECT DATABASE */
-// connect.connect();
+connect.connect();
 /* @@END CONNECT DATABASE */
 
 /* SESSION */

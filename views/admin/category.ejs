@@ -12,8 +12,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../../css/categorytable.css">
+<style>
+	.tdname
+	{
+		width: 20%;
+	}
+	.tdfullname
+	{
+		width: 30%;
+	}
+</style>
 <script>
-	var index = 1;
+	var clickID = 0,index = 0,delID = 0,delIndex = 0;
+	var listChecked = [],listCheckedIndex = [];
     $(document).ready(function(){
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
@@ -30,42 +41,132 @@
 			});
 		} 
 	});
+
 	checkbox.click(function(){
 		if(!this.checked){
 			$("#selectAll").prop("checked", false);
 		}
-    });
-    $('.edit').click(function()
+	});
+	$('.edit').click(function()
     {
-        console.log($('.edit').index(this));
-        console.log('click edit : ' + $(this).attr('name'));
-    } );
-	$('#edit-form').submit(function(e)
-    {
-   		e.preventDefault();
+		index = $('.edit').index(this);
 		var x = document.getElementById("cate-table").rows[index+1].cells;
 		var a = x[1].innerHTML;
 		var b = x[2].innerHTML;
 		var c = x[3].innerHTML;
 		var d = x[4].innerHTML;
+		clickID = parseInt($(this).attr('name'));
+		$('input[name="edit-name"]').val(b);
+		$('input[name="edit-fullname"]').val(c);
+		$('input[name="edit-des"]').val(d);
+		$('input[name="catID"]').val(clickID);
+    } );
+	$('#edit-form').submit(function(e)
+    {
+   		e.preventDefault();
+		var id = $('input[name="catID"]').val();
+		var name = $('input[name="edit-name"]').val();
+		var fullname= $('input[name="edit-fullname"]').val();
+		var description = $('input[name="edit-des"]').val();
 		$.ajax({
-                url: "/admin/post-cat",
+                url: "/admin/category/update",
                 type: "POST",
 				data: 
 				{
-					name : 'Quang'
+					id : id,
+					name : name,
+					fullname : fullname,
+					description : description
 				},
-                success: function(data){
-                    alert("Successfully submitted.")
-                }
+				success: function(data) 
+				{
+		$('#editEmployeeModal').modal('toggle');
+		$("#success").modal("toggle");
+					alert("Cập nhật thành công");
+					var x = document.getElementById("cate-table").rows[index+1].cells;
+					x[2].innerHTML = name;
+					x[3].innerHTML = fullname;
+					x[4].innerHTML = description;
+				}
             });
-		console.log(a + ' ' + b+ ' ' + c+ ' ' + d);
 		// var $row = $(this).closest("tr").data();
 		// console.log($row);
-		$('#editEmployeeModal').modal('toggle');
+	} );
+    $('.delete').click(function()
+    {
+		delIndex = $('.delete').index(this);
+		delID = parseInt($(this).attr('name'));
+		console.log(`Index : ${delIndex} ID : ${delID}`);
+	} );
+    $('#deleteAll').click(function()
+    {
+		var temp = [];
+		var tempIndex = [];
+		var x = document.getElementById("cate-table");
+		// var x = document.getElementById("cate-table").rows[index+1].cells;
+		checkbox.each(function(i){
+				// this.checked = true;
+				if (this.checked)
+				{
+					var ID = x.rows[i+1].cells[1].innerHTML;
+					temp.push(parseInt(ID));
+					tempIndex.push(parseInt(i));
+				}
+			});
+			listChecked = temp;
+			listCheckedIndex = tempIndex;
+			console.log('Index : ' ,listCheckedIndex);
+			console.log('ID : ',listChecked);
+			
+	} );
+	$('#deleteAllSubmit').click(function(e)
+    {
+		   e.preventDefault();
+		   $.ajax({
+                url: "/admin/category/deleteAll",
+                type: "POST",
+				data: 
+				{
+					listID : JSON.stringify(listChecked)
+				},
+				success: function(data) 
+				{
+			        $('#deleteALL').modal('toggle');
+					$("#success").modal("toggle");
+					for (let index = listCheckedIndex.length -1 ; index >= 0; index--) {
+						document.getElementById('cate-table').deleteRow(index + 1);					
+					}
+				},
+				error:function ()
+				{
+					console.log('erro');
+				}
+            });
+		
     } );
-	
-
+	$('#delete-form').submit(function(e)
+    {
+		   e.preventDefault();
+		   $.ajax({
+                url: "/admin/category/delete",
+                type: "POST",
+				data: 
+				{
+					id : delIndex
+				},
+				success: function(data) 
+				{
+			        $('#deleteEmployeeModal').modal('toggle');
+					$("#success").modal("toggle");
+					document.getElementById('cate-table').deleteRow(delIndex + 1);
+				},
+				error:function ()
+				{
+					console.log('erro');
+				}
+            });
+		
+    } );
 });
 </script>
   <body>
@@ -74,11 +175,11 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>Manage <b>Employees</b></h2>
+						<h2>Quản lý <b>Danh mục</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
-						<a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+						<a href="#addCat" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm Danh Mục</span></a>
+						<a href="#deleteALL" class="btn btn-danger" id="deleteAll" data-toggle="modal" ><i class="material-icons">&#xE15C;</i> <span>Xóa</span></a>						
 					</div>
                 </div>
             </div>
@@ -91,14 +192,16 @@
 								<label for="selectAll"></label>
 							</span>
 						</th>
-                        <th>Name</th>
-                        <th>Email</th>
-						<th>Address</th>
-                        <th>Phone</th>
-                        <th>Actions</th>
+                        <th hidden>ID</th>
+                        <th>Tên</th>
+						<th>Tên đầy đủ</th>
+                        <th>Mô tả</th>
+                        <th>Thao tác</th>
                     </tr>
-                </thead>
+				</thead>
+				<!-- BODY TABLE -->
                 <tbody>
+					<% for(var i=0; i<catList.length; i++) {%>
                     <tr>
 						<td>
 							<span class="custom-checkbox">
@@ -106,47 +209,16 @@
 								<label for="checkbox1"></label>
 							</span>
 						</td>
-                        <td>Thomas Hardy</td>
-                        <td>thomashardy@mail.com</td>
-						<td>89 Chiaroscuro Rd, Portland, USA</td>
-                        <td>(171) 555-2222</td>
+                        <td hidden><%= catList[i].id%></td>
+						<td class="tdname"><%= catList[i].name%></td>
+                        <td class="tdfullname"><%= catList[i].fullname%></td>
+                        <td><%= catList[i].description%></td>
                         <td>
-                            <a href="#editEmployeeModal" class="edit" name='11' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="#editCat" class="edit" name='<%= catList[i].id%>' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a href="#deleteCat" class="delete" name ='<%= catList[i].id%>' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                         </td>
-                    </tr>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox2" name="options[]" value="1">
-								<label for="checkbox2"></label>
-							</span>
-						</td>
-                        <td>Dominique Perrier</td>
-                        <td>dominiqueperrier@mail.com</td>
-						<td>Obere Str. 57, Berlin, Germany</td>
-                        <td>(313) 555-5735</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" name='12' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr>
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox3" name="options[]" value="1">
-								<label for="checkbox3"></label>
-							</span>
-						</td>
-                        <td>Maria Anders</td>
-                        <td>mariaanders@mail.com</td>
-						<td>25, rue Lauriston, Paris, France</td>
-                        <td>(503) 555-9931</td>
-                        <td>
-                            <a href="#editEmployeeModal" class="edit" name='13' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-                    </tr> 
+					</tr>
+				<% } %> 
                 </tbody>
             </table>
 			<div class="clearfix">
@@ -164,30 +236,26 @@
         </div>
     </div>
 	<!-- Edit Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
+	<div id="addCat" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
 					<div class="modal-header">						
-						<h4 class="modal-title">Add Employee</h4>
+						<h4 class="modal-title">Thêm Danh mục</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
 						<div class="form-group">
-							<label>Name</label>
+							<label>Tên ngắn gọn (gợi ý : Tiếng Anh)</label>
 							<input type="text" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Email</label>
-							<input type="email" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Address</label>
-							<textarea class="form-control" required></textarea>
-						</div>
-						<div class="form-group">
-							<label>Phone</label>
+							<label>Tên Đầy Đủ</label>
 							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Mô tả</label>
+							<input type="text" class="form-control">
 						</div>					
 					</div>
 					<div class="modal-footer">
@@ -199,56 +267,104 @@
 		</div>
 	</div>
 	<!-- Edit Modal HTML -->
-	<div id="editEmployeeModal" class="modal fade">
+	<div id="editCat" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form id="edit-form">
 					<div class="modal-header">						
-						<h4 class="modal-title">Edit Employee</h4>
+						<h4 class="modal-title">Cập nhật danh mục</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
-					<div class="modal-body">					
+					<div class="modal-body">
 						<div class="form-group">
-							<label>Name</label>
-							<input type="text" class="form-control" required>
+							<label>Tên ngắn gọn (gợi ý : tên Tiếng Anh)</label>
+							<input type="text" name= 'edit-name' class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Email</label>
-							<input type="text" class="form-control" required>
+							<label>Tên đầy đủ</label>
+							<input type="text" name="edit-fullname" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Address</label>
-							<textarea class="form-control" required></textarea>
+							<label>Mô Tả</label>
+							<input type="text" name="edit-des" class="form-control">
 						</div>
-						<div class="form-group">
-							<label>Phone</label>
-							<input type="text" class="form-control" required>
-						</div>					
+						<input name = 'catID' hidden="true">				
 					</div>
 					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-info" value="Save">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
+						<input type="submit" class="btn btn-info" value="Cập Nhật">
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 	<!-- Delete Modal HTML -->
-	<div id="deleteEmployeeModal" class="modal fade">
+	<div id="deleteCat" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="delete-form">
+					<div class="modal-header">						
+						<h4 class="modal-title">Xóa Danh Mục</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Xóa danh mục này?</p>
+						<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
+					</div>
+					<div class="modal-footer">
+						<input name="delID" hidden>
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input id="delete" type="submit" class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="deleteALL" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
 					<div class="modal-header">						
-						<h4 class="modal-title">Delete Employee</h4>
+						<h4 class="modal-title">Xóa Nhiều Danh Mục</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
 					<div class="modal-body">					
-						<p>Are you sure you want to delete these Records?</p>
-						<p class="text-warning"><small>This action cannot be undone.</small></p>
+						<p>Xóa những danh mục này?</p>
+						<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-danger" value="Delete">
+						<input id="deleteAllSubmit" type="submit" class="btn btn-danger" value="Delete">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="success" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form">
+					<div class="modal-header">						
+						<h4 class="modal-title">Thông Báo</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Thành công</p>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="failed" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form">
+					<div class="modal-header">						
+						<h4 class="modal-title">Thông Báo</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<p>Không thành công</p>
 					</div>
 				</form>
 			</div>
