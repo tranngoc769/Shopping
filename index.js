@@ -38,8 +38,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 /* @@END VIEWS ENGINE */
 
 /* BODY_PARSER */
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '60mb', extended: true}))
 /* END @@BODY_PARSER */
 
 /* VALIDATOR */
@@ -54,6 +54,9 @@ var adminRouter = require('./routes/adminroute');
 app.use('/admin', adminRouter);
 var adminCateRouter = require('./routes/adminroute/category');
 app.use('/admin/category', adminCateRouter);
+
+var adminProRouter = require('./routes/adminroute/product');
+app.use('/admin/product',adminProRouter);
 /* @@END ROUTE */
 
 

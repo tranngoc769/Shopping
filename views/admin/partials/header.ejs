@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../plugins/images/favicon.png">
+    <title>Thêm sản phẩm</title>
+    <link href="../../../admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../admin/css/categorytable.css">
+    <link href="../../../admin/css/sidebar-nav.min.css" rel="stylesheet">
+    <link href="../../../admin/css/jquery.toast.css" rel="stylesheet">
+    <link href="../../../admin/css/morris.css" rel="stylesheet">
+    <link href="../../../admin/css/animate.css" rel="stylesheet">
+    <link href="../../../admin/css/style.css" rel="stylesheet">
+    <link href="../../../admin/css/colors/default.css" id="theme" rel="stylesheet">
+    <link href="../../../admin/css/jquery-ui.css" id="theme" rel="stylesheet">
+    <script src="../../../admin/js/jquery.min.js"></script>
+    
+
+</head>
+
+<body class="fix-header">
+    <div class="preloader" style="display: none;">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"></circle>
+        </svg>
+    </div>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header">
+                <div class="top-left-part">
+                    <a class="logo" href="dashboard.html">
+                        <b>
+                            <!--This is dark logo icon-->
+                            <img src="../../../admin/admin-logo.png" alt="home" class="dark-logo">
+                            <!--This is light logo icon-->
+                            <img src="../../../admin/admin-logo-dark.png" alt="home" class="light-logo">
+                        </b>
+                        <span class="hidden-xs">
+                            <img src="../../../admin/admin-text.png" alt="home" class="dark-logo">
+                            <img src="../../../admin/admin-text-dark.png" alt="home" class="light-logo">
+                        </span>
+                    </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li>
+                        <a class="nav-toggler open-close waves-effect waves-light hidden-md hidden-lg"
+                            href="javascript:void(0)"><i class="fa fa-bars"></i></a>
+                    </li>
+                    <li class="in">
+                        <form role="search" class="app-search hidden-sm hidden-xs m-r-10">
+                            <input type="text" placeholder="Search..." class="form-control">
+                            <a href="" class="active">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </form>
+                    </li>
+                    <li>
+                        <a class="profile-pic" href="#"> <img src="../../../admin/varun.jpg" alt="user-img" width="36"
+                                class="img-circle"><b class="hidden-xs">Steave</b></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <div class="sidebar-nav slimscrollsidebar" style="overflow: hidden; width: auto; height: 100%;">
+                    <div class="sidebar-head">
+                        <h3><span class="fa-fw open-close"><i class="ti-close ti-menu"></i></span> <span
+                                class="hide-menu">Navigation</span></h3>
+                    </div>
+                    <ul class="nav" id="side-menu">
+                        <li style="padding: 70px 0 0;">
+                            <a href="dashboard.html" class="waves-effect"><i class="fa fa-clock-o fa-fw"
+                                    aria-hidden="true"></i>Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="profile.html" class="waves-effect"><i class="fa fa-user fa-fw"
+                                    aria-hidden="true"></i>Profile</a>
+                        </li>
+                        <li>
+                            <a href="basic-table.html" class="waves-effect"><i class="fa fa-table fa-fw"
+                                    aria-hidden="true"></i>Basic Table</a>
+                        </li>
+                        <li>
+                            <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw"
+                                    aria-hidden="true"></i>Icons</a>
+                        </li>
+                        <li>
+                            <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw"
+                                    aria-hidden="true"></i>Google Map</a>
+                        </li>
+                        <li>
+                            <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw"
+                                    aria-hidden="true"></i>Blank Page</a>
+                        </li>
+                        <li>
+                            <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw"
+                                    aria-hidden="true"></i>Error 404</a>
+                        </li>
+
+                    </ul>
+                    <div class="center p-20">
+                        <a href="https://wrappixel.com/templates/ampleadmin/" target="_blank"
+                            class="btn btn-danger btn-block waves-effect waves-light">Upgrade to Pro</a>
+                    </div>
+                </div>
+                <div class="slimScrollBar"
+                    style="background: rgba(0, 0, 0, 0.3); width: 6px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 757px;">
+                </div>
+                <div class="slimScrollRail"
+                    style="width: 6px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                </div>
+            </div>
+
+        </div>

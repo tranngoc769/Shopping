@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var catModel = require('../../utils/admin/category');
+var catModel = require('../../models/admin/category');
 router.get('/',async(req,res)=>
 {
     const object = await catModel.selectAllCat();

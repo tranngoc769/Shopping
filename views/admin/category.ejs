@@ -1,219 +1,241 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Danh Mục</title>
-<link rel="stylesheet" href="../../css/font-awesome.min.css">
-<link rel="stylesheet" href="../../css/bootstrap.min.css">
-<script src="../../js/jquery.min.js"></script>
-<script src="../../js/bootstrap.min.js"></script>
-<script src="../../js/cate_main.js"></script>
-<link rel="stylesheet" href="../../css/categorytable.css">
-<style>
-	
-</style>
-  <body>
-    <div class="container">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
-						<h2>Quản lý <b>Danh mục</b></h2>
-					</div>
-					<div class="col-sm-6">
-						<a href="#addCat" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm Danh Mục</span></a>
-						<a href="#deleteALL" class="btn btn-danger" id="deleteAll" data-toggle="modal" ><i class="material-icons">&#xE15C;</i> <span>Xóa</span></a>						
-					</div>
-                </div>
-            </div>
-            <table id = 'cate-table' class="table table-striped table-hover">
-                <thead>
-                    <tr>
-						<th>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
-                        <th hidden>ID</th>
-                        <th>Tên</th>
-						<th>Tên đầy đủ</th>
-                        <th>Mô tả</th>
-                        <th>Thao tác</th>
-                    </tr>
-				</thead>
-				<!-- BODY TABLE -->
-                <tbody>
-					<% for(var i=0; i<catList.length; i++) {%>
-                    <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
-                        <td hidden><%= catList[i].id%></td>
-						<td class="tdname"><%= catList[i].name%></td>
-                        <td class="tdfullname"><%= catList[i].fullname%></td>
-                        <td><%= catList[i].description%></td>
-                        <td>
-                            <a href="#editCat" class="edit" name='<%= catList[i].id%>' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                            <a href="#deleteCat" class="delete" name ='<%= catList[i].id%>' data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                        </td>
-					</tr>
-				<% } %> 
-                </tbody>
-            </table>
-			<!-- <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div> -->
-        </div>
-    </div>
-	<!-- Edit Modal HTML -->
-	<div id="addCat" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form id="add-form">
-					<div class="modal-header">						
-						<h4 class="modal-title">Thêm Danh mục</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<div class="form-group">
-							<label>Tên ngắn gọn (gợi ý : Tiếng Anh)</label>
-							<input name="add-name" type="text" class="form-control" required>
+<%- include('./partials/header') -%> 
+		<!-- Page Content -->
+		<div id="page-wrapper" style="min-height: 696px;">
+			<div class="container-fluid">
+				<!-- <div class="row bg-title">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Dashboard</h4> </div>
+                    <!-- <div class="col-lg-8 col-sm-8 col-md-8 col-xs-12">
+                        <div class="col-lg-4 col-sm-4 col-md-12 col-xs-12">
+							<a href="#deleteALL" class="btn btn-danger" id="deleteAll" data-toggle="modal" ><i class="material-icons">&#xE15C;</i> <span>Xóa</span></a>						
 						</div>
-						<div class="form-group">
-							<label>Tên Đầy Đủ</label>
-							<input name ="add-fullname" type="text" class="form-control" required>
+						<div class="col-lg-8 col-sm-8 col-md-12 col-xs-12">
+							<a href="#addCat" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm Danh Mục</span></a>
 						</div>
-						<div class="form-group">
-							<label>Mô tả</label>
-							<input name="add-des" type="text" class="form-control">
-						</div>					
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
-						<input type="submit" class="btn btn-success" value="Thêm">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- Edit Modal HTML -->
-	<div id="editCat" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form id="edit-form">
-					<div class="modal-header">						
-						<h4 class="modal-title">Cập nhật danh mục</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label>Tên ngắn gọn (gợi ý : tên Tiếng Anh)</label>
-							<input type="text" name= 'edit-name' class="form-control" required>
+                    </div> -->
+				<!-- /.col-lg-12 -->
+				<!-- </div> -->
+				<!-- table -->
+
+				<div class="row bg-title">
+					<div class="col-md-12 col-lg-12 col-sm-12">
+						<div class="table-wrapper">
+							<div class="table-title">
+								<div class="row">
+									<div class="col-sm-6">
+										<h2>Quản lý <b>Danh mục</b></h2>
+									</div>
+									<div class="col-sm-6"><a href="#addCat" class="btn btn-success"
+											data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm Danh
+												Mục</span></a>
+										<a href="#deleteALL" class="btn btn-danger" id="deleteAll"
+											data-toggle="modal"><i class="material-icons">&#xE15C;</i>
+											<span>Xóa</span></a>
+									</div>
+								</div>
+							</div>
+							<table id='cate-table' class="table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="selectAll">
+												<label for="selectAll"></label>
+											</span>
+										</th>
+										<th hidden>ID</th>
+										<th>Tên</th>
+										<th>Tên đầy đủ</th>
+										<th>Mô tả</th>
+										<th>Thao tác</th>
+									</tr>
+								</thead>
+								<!-- BODY TABLE -->
+								<tbody>
+									<% for(var i=0; i<catList.length; i++) {%>
+									<tr>
+										<td>
+											<span class="custom-checkbox">
+												<input type="checkbox" id="checkbox1" name="options[]" value="1">
+												<label for="checkbox1"></label>
+											</span>
+										</td>
+										<td hidden><%= catList[i].id%></td>
+										<td class="tdname"><%= catList[i].name%></td>
+										<td class="tdfullname"><%= catList[i].fullname%></td>
+										<td><%= catList[i].description%></td>
+										<td>
+											<a href="#editCat" class="edit" name='<%= catList[i].id%>'
+												data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+													title="Edit">&#xE254;</i></a>
+											<a href="#deleteCat" class="delete" name='<%= catList[i].id%>'
+												data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+													title="Delete">&#xE872;</i></a>
+										</td>
+									</tr>
+									<% } %>
+								</tbody>
+							</table>
+							<!-- <div class="clearfix">
+								<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+								<ul class="pagination">
+									<li class="page-item disabled"><a href="#">Previous</a></li>
+									<li class="page-item"><a href="#" class="page-link">1</a></li>
+									<li class="page-item"><a href="#" class="page-link">2</a></li>
+									<li class="page-item active"><a href="#" class="page-link">3</a></li>
+									<li class="page-item"><a href="#" class="page-link">4</a></li>
+									<li class="page-item"><a href="#" class="page-link">5</a></li>
+									<li class="page-item"><a href="#" class="page-link">Next</a></li>
+								</ul>
+							</div> -->
 						</div>
-						<div class="form-group">
-							<label>Tên đầy đủ</label>
-							<input type="text" name="edit-fullname" class="form-control" required>
+					</div>
+				</div>
+				<div id="addCat" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form id="add-form">
+								<div class="modal-header">
+									<h4 class="modal-title">Thêm Danh mục</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>Tên ngắn gọn (gợi ý : Tiếng Anh)</label>
+										<input name="add-name" type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Tên Đầy Đủ</label>
+										<input name="add-fullname" type="text" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Mô tả</label>
+										<input name="add-des" type="text" class="form-control">
+									</div>
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
+									<input type="submit" class="btn btn-success" value="Thêm">
+								</div>
+							</form>
 						</div>
-						<div class="form-group">
-							<label>Mô Tả</label>
-							<input type="text" name="edit-des" class="form-control">
+					</div>
+				</div>
+				<!-- Edit Modal HTML -->
+				<div id="editCat" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form id="edit-form">
+								<div class="modal-header">
+									<h4 class="modal-title">Cập nhật danh mục</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<label>Tên ngắn gọn (gợi ý : tên Tiếng Anh)</label>
+										<input type="text" name='edit-name' class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Tên đầy đủ</label>
+										<input type="text" name="edit-fullname" class="form-control" required>
+									</div>
+									<div class="form-group">
+										<label>Mô Tả</label>
+										<input type="text" name="edit-des" class="form-control">
+									</div>
+									<input name='catID' hidden="true">
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
+									<input type="submit" class="btn btn-info" value="Cập Nhật">
+								</div>
+							</form>
 						</div>
-						<input name = 'catID' hidden="true">				
 					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
-						<input type="submit" class="btn btn-info" value="Cập Nhật">
+				</div>
+				<!-- Delete Modal HTML -->
+				<div id="deleteCat" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form id="delete-form">
+								<div class="modal-header">
+									<h4 class="modal-title">Xóa Danh Mục</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Xóa danh mục này?</p>
+									<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
+								</div>
+								<div class="modal-footer">
+									<input name="delID" hidden>
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input id="delete" type="submit" class="btn btn-danger" value="Delete">
+								</div>
+							</form>
+						</div>
 					</div>
-				</form>
+				</div>
+				<div id="deleteALL" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form>
+								<div class="modal-header">
+									<h4 class="modal-title">Xóa Nhiều Danh Mục</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Xóa những danh mục này?</p>
+									<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
+								</div>
+								<div class="modal-footer">
+									<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+									<input id="deleteAllSubmit" type="submit" class="btn btn-danger" value="Delete">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div id="success" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form">
+								<div class="modal-header">
+									<h4 class="modal-title">Thông Báo</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Thành công</p>
+								</div>
+								</form>
+						</div>
+					</div>
+				</div>
+				<div id="failed" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<form">
+								<div class="modal-header">
+									<h4 class="modal-title">Thông Báo</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>Không thành công</p>
+								</div>
+								</form>
+						</div>
+					</div>
+				</div>
+
+
+
 			</div>
+			<!-- /.container-fluid -->
 		</div>
-	</div>
-	<!-- Delete Modal HTML -->
-	<div id="deleteCat" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form id="delete-form">
-					<div class="modal-header">						
-						<h4 class="modal-title">Xóa Danh Mục</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>Xóa danh mục này?</p>
-						<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
-					</div>
-					<div class="modal-footer">
-						<input name="delID" hidden>
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input id="delete" type="submit" class="btn btn-danger" value="Delete">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div id="deleteALL" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">Xóa Nhiều Danh Mục</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>Xóa những danh mục này?</p>
-						<p class="text-warning"><small>Hành động này không thể khôi phục</small></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input id="deleteAllSubmit" type="submit" class="btn btn-danger" value="Delete">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div id="success" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form">
-					<div class="modal-header">						
-						<h4 class="modal-title">Thông Báo</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>Thành công</p>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div id="failed" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form">
-					<div class="modal-header">						
-						<h4 class="modal-title">Thông Báo</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>Không thành công</p>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</body>
-</html>
+	<footer class="footer text-center"> Category </footer>
+<%- include('./partials/footer')-%> 
