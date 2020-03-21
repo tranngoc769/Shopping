@@ -10,10 +10,9 @@
 							<div class="col-sm-6">
 								<h2>Quản lý <b>Danh mục</b></h2>
 							</div>
-							<div class="col-sm-6"><a href="#addCat" class="btn btn-success" data-toggle="modal"><i
-										class="material-icons">&#xE147;</i> <span>Thêm Danh
-										Mục</span></a>
-								<a href="#deleteALL" class="btn btn-danger" id="deleteAll" data-toggle="modal"><i
+							<div class="col-sm-6">
+								<a href="./add" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Thêm Sản Phẩm</span></a>
+								<a href="#deleteAllPro" class="btn btn-danger" id="deleteAllPro" data-toggle="modal"><i
 										class="material-icons">&#xE15C;</i>
 									<span>Xóa</span></a>
 							</div>
@@ -29,8 +28,8 @@
 									</span>
 								</th>
 								<th width="30%">Tên</th>
-								<th width="15%">Giá</th>
 								<th width="15%">Giá Gốc</th>
+								<th width="15%">Giá Bán</th>
 								<th width="30%">Danh Mục</th>
 								<th width="10%">SL</th>
 								<th>Thao tác</th>
@@ -55,7 +54,7 @@
 								<td>
 									<a href="/admin/product/edit/<%=product[i].id %>" class="edit" data-toggle="modal"><i class="material-icons"
 											data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-									<a href="#deleteCat" class="delete" data-toggle="modal"><i class="material-icons"
+									<a href="#deletePro" class="delete" data-toggle="modal"><i class="material-icons"
 											data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 								</td>
 							</tr>
@@ -77,70 +76,8 @@
 				</div>
 			</div>
 		</div>
-		<div id="addCat" class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form id="add-form">
-						<div class="modal-header">
-							<h4 class="modal-title">Thêm Danh mục</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label>Tên ngắn gọn (gợi ý : Tiếng Anh)</label>
-								<input name="add-name" type="text" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Tên Đầy Đủ</label>
-								<input name="add-fullname" type="text" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Mô tả</label>
-								<input name="add-des" type="text" class="form-control">
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
-							<input type="submit" class="btn btn-success" value="Thêm">
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		<!-- Edit Modal HTML -->
-		<div id="editCat" class="modal fade">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<form id="edit-form">
-						<div class="modal-header">
-							<h4 class="modal-title">Cập nhật danh mục</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label>Tên ngắn gọn (gợi ý : tên Tiếng Anh)</label>
-								<input type="text" name='edit-name' class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Tên đầy đủ</label>
-								<input type="text" name="edit-fullname" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Mô Tả</label>
-								<input type="text" name="edit-des" class="form-control">
-							</div>
-							<input name='catID' hidden="true">
-						</div>
-						<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Hủy">
-							<input type="submit" class="btn btn-info" value="Cập Nhật">
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
 		<!-- Delete Modal HTML -->
-		<div id="deleteCat" class="modal fade">
+		<div id="deletePro" class="modal fade">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<form id="delete-form">
@@ -161,7 +98,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="deleteALL" class="modal fade">
+		<div id="deleteAllPro" class="modal fade">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<form>
@@ -175,7 +112,7 @@
 						</div>
 						<div class="modal-footer">
 							<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-							<input id="deleteAllSubmit" type="submit" class="btn btn-danger" value="Delete">
+							<input id="deleteAllProSubmit" type="submit" class="btn btn-danger" value="Delete">
 						</div>
 					</form>
 				</div>

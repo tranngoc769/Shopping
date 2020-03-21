@@ -22,11 +22,19 @@ router.get('/edit/:proID', async (req, res) => {
     var proID =  req.params['proID'];
     var product = await proModel.selectProByID(proID);
     const allCat = await catModel.selectAllCat();
-    console.log(product[0]);
+    const photos = await proModel.getImage(proID);
+    var stringPhoto = ``;
+    photos.forEach(element => {
+        stringPhoto+= `
+        <li file = 'Quang'>
+            <img class = 'img-thumb' name = "${element}" src = '../../../photos/${element}' />
+            </li>`
+    });
     res.render('admin/editProduct',
         {
             category: allCat,
-            product : product[0]
+            product : product[0],
+            picked : stringPhoto
         });
         
 })
@@ -66,6 +74,26 @@ router.post('/add', async (req, res) => {
     {
         
         res.send('Thêm sản phẩm không thành công : ' + ex);
+    }
+})
+router.post('/edit/', async (req, res) => {
+    try {
+        var data = req.body;
+        var catID = JSON.parse(data.catID);
+        var catName = JSON.parse(data.catName);
+        var value = JSON.parse(data.value);
+        console.log(value);
+        // const result = await proModel.getImage(4);
+        // console.log(result);
+        const result = await proModel.updateProByID(value.proID,value.name,value.iPrice,value.oPrice,catID,catName,value.amount);
+        res.send('Chỉnh sửa sản phẩm thành công');
+
+
+    }
+    catch(ex)
+    {
+        
+        res.send('Chỉnh sửa phẩm không thành công : ' + ex);
     }
 })
 module.exports = router;

@@ -25,6 +25,11 @@ module.exports = {
         var sql =  `INSERT INTO product(name,inPrice,sellPrice,category,catName,amount,photo) VALUES ("${name}",${inPrice},${sellPrice},${category},'${catName}',${amount},'${photo}')`;
         const rows = await connection.querry(sql);
     },
+    updateProByID : async (id,name,inPrice,sellPrice,category,catName,amount) =>{
+        var sql =  `UPDATE product set name ="${name}",inPrice=${inPrice},sellPrice =${sellPrice},category=${category},catName='${catName}',amount=${amount} where id = ${id}`;
+        const rows = await connection.querry(sql);
+        console.log(sql);
+    },
     getImage : async (id) =>{
         var sql =  `SELECT photo FROM product where id = ${id}`;
         const rows = await connection.querry(sql);
